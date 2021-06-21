@@ -1,0 +1,30 @@
+server:
+  port: 8775
+
+spring:
+  application:
+    name: AUTH-SERVER
+  devtools:
+    livereload:
+      enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update # 새로 추가한 옵션 Entity Class 기반으로 Table 생성
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://teamrev-db.cskul8vj3asp.ap-northeast-2.rds.amazonaws.com:3306/rev_problem?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    username: root
+    password: teamrev2021
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      #      defaultZone: http://3.35.24.199:8761/eureka
+      #      defaultZone: http://10.178.0.3:8761/eureka
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    #    hostname: 10.178.0.3
+    hostname: localhost
