@@ -32,6 +32,7 @@ public class UserService {
     }
 
     public void addAuthority(String userId, String authority){
+
         userRepository.findById(userId).ifPresent(user->{
             RevAuthority newRole = new RevAuthority(user.getUserId(), authority);
             if(user.getAuthorities() == null){
