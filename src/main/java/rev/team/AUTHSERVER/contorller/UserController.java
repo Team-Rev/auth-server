@@ -28,4 +28,9 @@ public class UserController {
         return userService.findUser(username).orElseThrow(RuntimeException::new).getNickname();
     }
 
+    @GetMapping("/userPoint")
+    public Long getPoint(@RequestParam String username) {
+        return userService.findUser(username).orElseThrow(RuntimeException::new).getPoint();
+    }
+
 }
