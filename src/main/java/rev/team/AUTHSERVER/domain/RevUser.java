@@ -1,10 +1,7 @@
 package rev.team.AUTHSERVER.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -17,6 +14,8 @@ import java.util.regex.Pattern;
 @NoArgsConstructor
 @Data
 @Builder
+@Getter
+@Setter
 @Entity
 @Table(name = "rev_user")
 public class RevUser implements UserDetails {

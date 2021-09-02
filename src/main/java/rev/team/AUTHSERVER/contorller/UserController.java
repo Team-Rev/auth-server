@@ -2,6 +2,9 @@ package rev.team.AUTHSERVER.contorller;
 
 import org.springframework.web.bind.annotation.*;
 import rev.team.AUTHSERVER.domain.RevUser;
+import rev.team.AUTHSERVER.domain.request.FindIdReq;
+import rev.team.AUTHSERVER.domain.request.FindPwReq;
+import rev.team.AUTHSERVER.domain.request.NewPwReq;
 import rev.team.AUTHSERVER.service.UserService;
 
 @RestController
@@ -33,4 +36,18 @@ public class UserController {
         return userService.findUser(username).orElseThrow(RuntimeException::new).getPoint();
     }
 
+    @PostMapping("/findId")
+    public String findId(@RequestBody FindIdReq findIdReq) {
+        return userService.findId(findIdReq);
+    }
+
+    @PostMapping("/findPw")
+    public String findPw(@RequestBody FindPwReq findPwReq) {
+        return userService.findPw(findPwReq);
+    }
+
+    // TODO : 사용자 유무 확인 후 비밀번호 변경
+    @PatchMapping("/changeNewPw")
+    public String changeNewPw(@RequestBody NewPwReq newPwReq) {
+        return userService.changeNewPw(newPwReq); }
 }

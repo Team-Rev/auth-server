@@ -3,8 +3,12 @@ package rev.team.AUTHSERVER.service;
 import org.springframework.stereotype.Service;
 import rev.team.AUTHSERVER.domain.RevAuthority;
 import rev.team.AUTHSERVER.domain.RevUser;
+import rev.team.AUTHSERVER.domain.request.FindIdReq;
+import rev.team.AUTHSERVER.domain.request.FindPwReq;
+import rev.team.AUTHSERVER.domain.request.NewPwReq;
 import rev.team.AUTHSERVER.repository.RevUserRepository;
 
+import javax.swing.text.html.Option;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,5 +65,32 @@ public class UserService {
                 save(user);
             }
         });
+    }
+
+    public String findId(FindIdReq findIdReq) {
+        Optional<RevUser> revUser = userRepository.findUserIdByNameAndPhone(findIdReq.getName(), findIdReq.getPhone());
+
+        if (revUser.isEmpty()) {
+            return "USER NOT FOUND";
+        } else {
+            return revUser.get().getUsername();
+        }
+    }
+
+    public String findPw(FindPwReq findPwReq) {
+        Optional<RevUser> revUser = userRepository.findRevUserByNameAndUserIdAndPhone(findPwReq.getName(), findPwReq.getUsername(), findPwReq.getPhone());
+
+        if (revUser.isEmpty()) {
+            return "USER NOT FOUND";
+        } else {
+            return "OK";
+        }
+    }
+
+    public String changeNewPw(NewPwReq newPwReq) {
+        if (userRepository.updateById(newPwReq.getUserId(), newPwReq.getNewPassword()) == 1) {
+            return "UPDATE SUCCESS";
+        }
+        return "UPDATE FAIL";
     }
 }
