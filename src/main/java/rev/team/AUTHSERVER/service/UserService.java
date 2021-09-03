@@ -5,10 +5,9 @@ import rev.team.AUTHSERVER.domain.RevAuthority;
 import rev.team.AUTHSERVER.domain.RevUser;
 import rev.team.AUTHSERVER.domain.request.FindIdReq;
 import rev.team.AUTHSERVER.domain.request.FindPwReq;
-import rev.team.AUTHSERVER.domain.request.NewPwReq;
+import rev.team.AUTHSERVER.domain.request.UpdatePwReq;
 import rev.team.AUTHSERVER.repository.RevUserRepository;
 
-import javax.swing.text.html.Option;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -78,7 +77,7 @@ public class UserService {
     }
 
     public String findPw(FindPwReq findPwReq) {
-        Optional<RevUser> revUser = userRepository.findRevUserByNameAndUserIdAndPhone(findPwReq.getName(), findPwReq.getUsername(), findPwReq.getPhone());
+        Optional<RevUser> revUser = userRepository.findRevUserByNameAndUserIdAndPhone(findPwReq.getName(), findPwReq.getUserId(), findPwReq.getPhone());
 
         if (revUser.isEmpty()) {
             return "USER NOT FOUND";
@@ -87,10 +86,16 @@ public class UserService {
         }
     }
 
-    public String changeNewPw(NewPwReq newPwReq) {
-        if (userRepository.updateById(newPwReq.getUserId(), newPwReq.getNewPassword()) == 1) {
+    public String changeNewPw(UpdatePwReq updatePwReq) {
+        RevUser user = userRepository.findById(updatePwReq.getUserId()).get();
+
+        if (user == null) {
+            return "USER NOT FOUND";
+        } else {
+            user.setPassword(updatePwReq.getNewPassword());
+            userRepository.save(user);
+
             return "UPDATE SUCCESS";
         }
-        return "UPDATE FAIL";
     }
 }

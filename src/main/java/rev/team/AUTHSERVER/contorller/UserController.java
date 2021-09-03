@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import rev.team.AUTHSERVER.domain.RevUser;
 import rev.team.AUTHSERVER.domain.request.FindIdReq;
 import rev.team.AUTHSERVER.domain.request.FindPwReq;
-import rev.team.AUTHSERVER.domain.request.NewPwReq;
+import rev.team.AUTHSERVER.domain.request.UpdatePwReq;
 import rev.team.AUTHSERVER.service.UserService;
 
 @RestController
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     // TODO : 사용자 유무 확인 후 비밀번호 변경
-    @PatchMapping("/changeNewPw")
-    public String changeNewPw(@RequestBody NewPwReq newPwReq) {
-        return userService.changeNewPw(newPwReq); }
+    @PatchMapping("/updatePw")
+    public String changeNewPw(@RequestBody UpdatePwReq updatePwReq) {
+        return userService.changeNewPw(updatePwReq); }
 }
