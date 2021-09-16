@@ -1,6 +1,7 @@
 package rev.team.AUTHSERVER.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import rev.team.AUTHSERVER.domain.RevAuthority;
 import rev.team.AUTHSERVER.domain.RevUser;
 import rev.team.AUTHSERVER.domain.request.FindIdReq;
@@ -8,6 +9,7 @@ import rev.team.AUTHSERVER.domain.request.FindPwReq;
 import rev.team.AUTHSERVER.domain.request.UpdatePwReq;
 import rev.team.AUTHSERVER.repository.RevUserRepository;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,6 +68,20 @@ public class UserService {
         });
     }
 
+    @Transactional
+    public String updateUser(RevUser user) {
+        RevUser updateUser = userRepository.findById(user.getUserId()).get();
+
+        updateUser.setDOB(user.getDOB());
+        updateUser.setPhone(user.getPhone());
+        updateUser.setAddress(user.getAddress());
+        updateUser.setDetailAddress(user.getDetailAddress());
+        updateUser.setPostNumber(user.getPostNumber());
+
+        userRepository.save(updateUser);
+        return "OK";
+    }
+
     public String findId(FindIdReq findIdReq) {
         Optional<RevUser> revUser = userRepository.findUserIdByNameAndPhone(findIdReq.getName(), findIdReq.getPhone());
 
@@ -86,14 +102,14 @@ public class UserService {
         }
     }
 
-    public String changeNewPw(UpdatePwReq updatePwReq) {
-        RevUser user = userRepository.findById(updatePwReq.getUserId()).get();
+    public String updatePw(UpdatePwReq updatePwReq) {
+        Optional<RevUser> revUser = userRepository.findById(updatePwReq.getUserId());
 
-        if (user == null) {
+        if (revUser.isEmpty()) {
             return "USER NOT FOUND";
         } else {
-            user.setPassword(updatePwReq.getNewPassword());
-            userRepository.save(user);
+            revUser.get().setPassword(updatePwReq.getNewPassword());
+            userRepository.save(revUser.get());
 
             return "UPDATE SUCCESS";
         }
